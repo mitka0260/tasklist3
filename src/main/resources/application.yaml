@@ -1,0 +1,10 @@
+spring:
+
+  application:
+    name: tasklist3 
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/tasklist3?currentSchema=tasklist3
+    username: postgres
+    password: klop0987
+    driver-class-name: org.postgresql.Driver
