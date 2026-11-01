@@ -34,6 +34,9 @@
 		<java.version>27</java.version>
 		<postgres.version>42.7.14</postgres.version>
 		<lombok.version>1.18.48</lombok.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
+		<hibernate-validator.version>9.1.5.Final</hibernate-validator.version>
+		<jakarta-validation.version>3.1.1</jakarta-validation.version>
 	</properties>
 
 	<dependencies>
@@ -64,6 +67,34 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 			<version>${lombok.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${mapstruct.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${mapstruct.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>${jakarta-validation.version}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
