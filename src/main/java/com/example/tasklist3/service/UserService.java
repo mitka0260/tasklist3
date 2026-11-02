@@ -2,8 +2,6 @@ package com.example.tasklist3.service;
 
 import com.example.tasklist3.domain.user.User;
 
-import java.util.Optional;
-
 public interface UserService {
   User getById(Long id); // здесь нет Optional, т.к возвращает либо объект, либо исключение
 

@@ -8,3 +8,31 @@ spring:
     username: postgres
     password: klop0987
     driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      mode: always
+      continue-on-error: false
+#      надо запустить только один раз - данные не будут вставляться дважды (либо на 2 строки выше поставить mode: never)
+#      data-locations: classpath:demo_data.sql
+
+#  liquibase:
+#    change-log: classpath:liquibase/db.changelog.yaml
+#    enabled: true
+#    default-schema: tasklist
+#
+#  mybatis:
+#    mapper-locations: classpath:mybatis/mapper/*.xml
+
+# https://www.base64encode.net/ -> someLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongString
+# some string for my secret for spring security and Jwt authorization. This string must be enough long to protect my application from fucking hackers.
+security:
+  jwt:
+#    secret: ZWNycmZ2c3Jmc2Zyc2ZzcmY0ZnJlc2Zyc2Zyc2Zyc2Zyc2Zyc2ZzcktISUhJSElVSElVSHtQKXtfTylfSU8pKFlVVVlIR1lVSEc=
+#    secret: c29tZUxvbmdTdHJpbmdzb21lTG9uZ1N0cmluZ3NvbWVMb25nU3RyaW5nc29tZUxvbmdTdHJpbmdzb21lTG9uZ1N0cmluZ3NvbWVMb25nU3RyaW5nc29tZUxvbmdTdHJpbmdzb21lTG9uZ1N0cmluZ3NvbWVMb25nU3RyaW5nc29tZUxvbmdTdHJpbmdzb21lTG9uZ1N0cmluZ3NvbWVMb25nU3RyaW5n
+    secret: c29tZSBzdHJpbmcgZm9yIG15IHNlY3JldCBmb3Igc3ByaW5nIHNlY3VyaXR5IGFuZCBKd3QgYXV0aG9yaXphdGlvbi4gVGhpcyBzdHJpbmcgbXVzdCBiZSBlbm91Z2ggbG9uZyB0byBwcm90ZWN0IG15IGFwcGxpY2F0aW9uIGZyb20gZnVja2luZyBoYWNrZXJzLg==
+    access: 3600000
+    refresh: 2592000000
+
+#  springdoc:
+#    override-with-generic-response: false
