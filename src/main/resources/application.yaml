@@ -20,9 +20,9 @@ spring:
 #    change-log: classpath:liquibase/db.changelog.yaml
 #    enabled: true
 #    default-schema: tasklist
-#
-#  mybatis:
-#    mapper-locations: classpath:mybatis/mapper/*.xml
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
 
 # https://www.base64encode.net/ -> someLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongString
 # some string for my secret for spring security and Jwt authorization. This string must be enough long to protect my application from fucking hackers.

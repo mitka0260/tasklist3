@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tasklist3.repository.UserRepository"> <!-- ссылка на интерфейс репозитория -->
+    <resultMap id="UserResultMap" type="com.example.tasklist3.domain.user.User" autoMapping="false"> <!-- строки переводит в объекты, autoMapping: false позволяет избежать ошибок автоматического маппинга -->
+        <id property="id" column="user_id" />   <!-- описание как связываются колонки в БД с объектом, user_id - алиас в SQL'e { id: 1 } <=> БД.колонка.user_id-->
+        <result property="name" column="user_name" />
+        <result property="username" column="user_username" />
+        <result property="password" column="user_password" />
+
+        <!-- сетаем коллекцию ролей и тасок: -->
+        <collection property="roles"
+                    ofType="com.example.tasklist3.domain.user.Role"
+                    autoMapping="false">
+            <result property="name" column="user_role_role" />  <!-- маппим enum - у него есть единственное поле name -->
+        </collection>
+        <collection property="tasks"
+                    ofType="com.example.tasklist3.domain.task.Task"
+                    resultMap="com.example.tasklist3.repository.TaskRepository.TaskResultMap"
+                    autoMapping="false" />   <!-- ссылка на resultMap для таски -->
+
+<!-- так делают связи OneToOne, OneToMany etc -->
+<!--   <association property="" />-->
+    </resultMap>
+
+    <select id="findById" resultMap="UserResultMap">
+        SELECT  u.id as user_id,
+                u.name as user_name,
+                u.username as user_username,
+                u.password as user_password,
+                ur.role as user_role_role,
+                t.id as task_id,
+                t.title as task_title,
+                t.description as task_description,
+                t.expiration_date as task_expiration_date,
+                t.status as task_status
+        FROM tasklist3.users u
+            LEFT JOIN tasklist3.users_roles ur ON u.id = ur.user_id
+            LEFT JOIN tasklist3.users_tasks ut ON u.id = ut.user_id
+            LEFT JOIN tasklist3.tasks t ON ut.task_id = t.id
+        WHERE u.id = #{id}
+    </select>
+
+    <select id="findByUsername" resultMap="UserResultMap">
+        SELECT  u.id as user_id,
+                u.name as user_name,
+                u.username as user_username,
+                u.password as user_password,
+                ur.role as user_role_role,
+                t.id as task_id,
+                t.title as task_title,
+                t.description as task_description,
+                t.expiration_date as task_expiration_date,
+                t.status as task_status
+        FROM tasklist3.users u
+            LEFT JOIN tasklist3.users_roles ur ON u.id = ur.user_id
+            LEFT JOIN tasklist3.users_tasks ut ON u.id = ut.user_id
+            LEFT JOIN tasklist3.tasks t ON ut.task_id = t.id
+        WHERE u.username = #{username}
+    </select>
+
+    <update id="update">
+        UPDATE tasklist3.users
+        SET name = #{name},
+            username = #{username},
+            password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="create" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        INSERT INTO tasklist3.users (name, username, password)
+        VALUES (#{name}, #{username}, #{password})
+    </insert>
+
+    <insert id="insertUserRole">
+        INSERT INTO tasklist3.users_roles (user_id, role)
+        VALUES (#{userId}, #{role})
+    </insert>
+
+    <select id="isTaskOwner" resultType="boolean">
+        SELECT EXISTS(
+                    SELECT 1
+                    FROM tasklist3.users_tasks
+                    WHERE user_id = #{userId}
+                    AND task_id = #{taskId}
+        )
+    </select>
+
+    <delete id="delete">
+        DELETE FROM tasklist3.users
+        WHERE id = #{id}
+    </delete>
+</mapper>
