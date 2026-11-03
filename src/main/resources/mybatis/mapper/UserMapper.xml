@@ -36,10 +36,10 @@
                 t.description as task_description,
                 t.expiration_date as task_expiration_date,
                 t.status as task_status
-        FROM tasklist3.users u
-            LEFT JOIN tasklist3.users_roles ur ON u.id = ur.user_id
-            LEFT JOIN tasklist3.users_tasks ut ON u.id = ut.user_id
-            LEFT JOIN tasklist3.tasks t ON ut.task_id = t.id
+        FROM users u
+            LEFT JOIN users_roles ur ON u.id = ur.user_id
+            LEFT JOIN users_tasks ut ON u.id = ut.user_id
+            LEFT JOIN tasks t ON ut.task_id = t.id
         WHERE u.id = #{id}
     </select>
 
@@ -54,15 +54,15 @@
                 t.description as task_description,
                 t.expiration_date as task_expiration_date,
                 t.status as task_status
-        FROM tasklist3.users u
-            LEFT JOIN tasklist3.users_roles ur ON u.id = ur.user_id
-            LEFT JOIN tasklist3.users_tasks ut ON u.id = ut.user_id
-            LEFT JOIN tasklist3.tasks t ON ut.task_id = t.id
+        FROM users u
+            LEFT JOIN users_roles ur ON u.id = ur.user_id
+            LEFT JOIN users_tasks ut ON u.id = ut.user_id
+            LEFT JOIN tasks t ON ut.task_id = t.id
         WHERE u.username = #{username}
     </select>
 
     <update id="update">
-        UPDATE tasklist3.users
+        UPDATE users
         SET name = #{name},
             username = #{username},
             password = #{password}
@@ -70,26 +70,26 @@
     </update>
 
     <insert id="create" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
-        INSERT INTO tasklist3.users (name, username, password)
+        INSERT INTO users (name, username, password)
         VALUES (#{name}, #{username}, #{password})
     </insert>
 
     <insert id="insertUserRole">
-        INSERT INTO tasklist3.users_roles (user_id, role)
+        INSERT INTO users_roles (user_id, role)
         VALUES (#{userId}, #{role})
     </insert>
 
     <select id="isTaskOwner" resultType="boolean">
         SELECT EXISTS(
                     SELECT 1
-                    FROM tasklist3.users_tasks
+                    FROM users_tasks
                     WHERE user_id = #{userId}
                     AND task_id = #{taskId}
         )
     </select>
 
     <delete id="delete">
-        DELETE FROM tasklist3.users
+        DELETE FROM users
         WHERE id = #{id}
     </delete>
 </mapper>

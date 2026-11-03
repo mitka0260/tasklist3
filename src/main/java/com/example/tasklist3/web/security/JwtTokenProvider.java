@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** https://medium.com/@frankpythagore/upgrading-your-jwt-implementation-in-java-a-guide-to-the-new-io-jsonwebtoken-api-ab30234d5979 */
+/** <a href="https://medium.com/@frankpythagore/upgrading-your-jwt-implementation-in-java-a-guide-to-the-new-io-jsonwebtoken-api-ab30234d5979">...</a> */
 
 // TODO check newer code works
 // https://github.com/SpringBootCourses/tasklist/blob/main/src/main/java/com/example/tasklist/web/security/JwtTokenProvider.java

@@ -18,7 +18,7 @@
                t.description        as task_description,
                t.expiration_date    as task_expiration_date,
                t.status             as task_status
-        FROM tasklist3.tasks t
+        FROM tasks t
         WHERE t.id = #{id}
     </select>
 
@@ -28,13 +28,13 @@
                t.description        as task_description,
                t.expiration_date    as task_expiration_date,
                t.status             as task_status
-        FROM tasklist3.tasks t
-        JOIN tasklist3.users_tasks ut ON t.id = ut.task_id
+        FROM tasks t
+        JOIN users_tasks ut ON t.id = ut.task_id
         WHERE ut.user_id = #{userId}
     </select>
 
     <update id="update">
-        UPDATE tasklist3.tasks
+        UPDATE tasks
         SET title = #{title},
             description = #{description},
             expiration_date = #{expirationDate},
@@ -43,18 +43,18 @@
     </update>
 
     <insert id="assignToUserById">
-        INSERT INTO tasklist3.users_tasks (task_id, user_id)
+        INSERT INTO users_tasks (task_id, user_id)
         VALUES (#{taskId}, #{userId})
     </insert>
 
     <insert id="create" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
-        INSERT INTO tasklist3.tasks (title, description, expiration_date, status)
+        INSERT INTO tasks (title, description, expiration_date, status)
         VALUES (#{title}, #{description}, #{expirationDate}, #{status})
         <!-- Т.к. метод принимает только один объект, то не надо писать через точку #{task.id} etc -->
     </insert>
     
     <delete id="delete">
-        DELETE FROM tasklist3.tasks
+        DELETE FROM tasks
         WHERE id = #{id}
     </delete>
 </mapper>

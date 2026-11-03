@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TaskRepositoryImpl implements TaskRepository {
 
-  // NB! везде одна и та же ошибка -- Connection и PreparedStatement не закрываются в случае эксепшена при обращении к БД.
+  // NB! Везде одна и та же ошибка -- Connection и PreparedStatement не закрываются в случае эксепшена при обращении к БД.
 
   private final DataSourceConfig dataSourceConfig;
 
@@ -26,7 +26,7 @@ public class TaskRepositoryImpl implements TaskRepository {
              t.description        as task_description,
              t.expiration_date    as task_expiration_date,
              t.status             as task_status
-      FROM tasklist3.tasks t
+      FROM tasks t
       WHERE t.id = ?
       """;
 
@@ -52,8 +52,8 @@ public class TaskRepositoryImpl implements TaskRepository {
              t.description        as task_description,
              t.expiration_date    as task_expiration_date,
              t.status             as task_status
-      FROM tasklist3.tasks t
-      JOIN tasklist3.users_tasks ut ON t.id = ut.task_id
+      FROM tasks t
+      JOIN users_tasks ut ON t.id = ut.task_id
       WHERE ut.user_id = ?
       """;
 
@@ -73,7 +73,7 @@ public class TaskRepositoryImpl implements TaskRepository {
   }
 
   private final String ASSIGN = """
-      INSERT INTO tasklist3.users_tasks (task_id, user_id)
+      INSERT INTO users_tasks (task_id, user_id)
       VALUES (?, ?)
       """;
 
@@ -91,7 +91,7 @@ public class TaskRepositoryImpl implements TaskRepository {
   }
 
   private final String UPDATE = """
-      UPDATE tasklist3.tasks
+      UPDATE tasks
       SET title = ?,
           description = ?,
           expiration_date = ?,
@@ -128,7 +128,7 @@ public class TaskRepositoryImpl implements TaskRepository {
   }
 
   private final String CREATE = """
-      INSERT INTO tasklist3.tasks (title, description, expiration_date, status)
+      INSERT INTO tasks (title, description, expiration_date, status)
       VALUES (?, ?, ?, ?)
       """;
 
@@ -166,7 +166,7 @@ public class TaskRepositoryImpl implements TaskRepository {
   }
 
   private final String DELETE = """
-      DELETE FROM tasklist3.tasks
+      DELETE FROM tasks
       WHERE id = ?
       """;
 

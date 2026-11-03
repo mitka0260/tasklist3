@@ -4,7 +4,6 @@ import com.example.tasklist3.domain.exception.ResourceNotFoundException;
 import com.example.tasklist3.domain.task.Status;
 import com.example.tasklist3.domain.task.Task;
 import com.example.tasklist3.repository.TaskRepository;
-import com.example.tasklist3.repository.UserRepository;
 import com.example.tasklist3.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

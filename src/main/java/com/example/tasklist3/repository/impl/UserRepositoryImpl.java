@@ -65,10 +65,10 @@ public class UserRepositoryImpl implements UserRepository {
                 t.description as task_description,
                 t.expiration_date as task_expiration_date,
                 t.status as task_status
-        FROM tasklist3.users u
-            LEFT JOIN tasklist3.users_roles ur ON u.id = ur.user_id
-            LEFT JOIN tasklist3.users_tasks ut ON u.id = ut.user_id
-            LEFT JOIN tasklist3.tasks t ON ut.task_id = t.id
+        FROM users u
+            LEFT JOIN users_roles ur ON u.id = ur.user_id
+            LEFT JOIN users_tasks ut ON u.id = ut.user_id
+            LEFT JOIN tasks t ON ut.task_id = t.id
         WHERE u.id = ?
         """;
 
@@ -113,10 +113,10 @@ public class UserRepositoryImpl implements UserRepository {
                 t.description as task_description,
                 t.expiration_date as task_expiration_date,
                 t.status as task_status
-        FROM tasklist3.users u
-            LEFT JOIN tasklist3.users_roles ur ON u.id = ur.user_id
-            LEFT JOIN tasklist3.users_tasks ut ON u.id = ut.user_id
-            LEFT JOIN tasklist3.tasks t ON ut.task_id = t.id
+        FROM users u
+            LEFT JOIN users_roles ur ON u.id = ur.user_id
+            LEFT JOIN users_tasks ut ON u.id = ut.user_id
+            LEFT JOIN tasks t ON ut.task_id = t.id
         WHERE u.username = ?
         """;
 
@@ -141,7 +141,7 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   private final String UPDATE = """
-        UPDATE tasklist3.users
+        UPDATE users
         SET name = ?,
             username = ?,
             password = ?
@@ -166,7 +166,7 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   private final String CREATE = """
-        INSERT INTO tasklist3.users (name, username, password)
+        INSERT INTO users (name, username, password)
         VALUES (?, ?, ?)
         """;
 
@@ -193,7 +193,7 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   private final String INSERT_USER_ROLE = """
-        INSERT INTO tasklist3.users_roles (user_id, role)
+        INSERT INTO users_roles (user_id, role)
         VALUES (?, ?)
         """;
 
@@ -215,7 +215,7 @@ public class UserRepositoryImpl implements UserRepository {
   private final String IS_TASK_OWNER = """
         SELECT EXISTS(
          	SELECT 1
-             FROM tasklist3.users_tasks
+             FROM users_tasks
              WHERE user_id = ?
              AND task_id = ?
          )
@@ -242,7 +242,7 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   private final String DELETE = """
-        DELETE FROM tasklist3.users
+        DELETE FROM users
         WHERE id = ?
         """;
 
