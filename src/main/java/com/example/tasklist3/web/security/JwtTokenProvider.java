@@ -144,22 +144,28 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(
-            final String token
+      final String token
     ) {
-        Jws<Claims> claims = Jwts
+        // Этот try+catch - это костыль
+        try {
+            Jws<Claims> claims = Jwts
 //             .parserBuilder()
-            .parser()
-                // .setSigningKey(key)
-                .verifyWith(key)
-                .build()
-                // .parseClaimsJws(token)
-                .parseSignedClaims(token);
+              .parser()
+              // .setSigningKey(key)
+              .verifyWith(key)
+              .build()
+              // .parseClaimsJws(token)
+              .parseSignedClaims(token);
 
-        return claims
+            return claims
 //                .getBody()
-                .getPayload()
-                .getExpiration()
-                .after(new Date());
+              .getPayload()
+              .getExpiration()
+              .after(new Date());
+        } catch (ExpiredJwtException e) {
+            System.out.println("Validate Token Expired: " + e.getMessage());
+        }
+      return false;
     }
 
     private String getId(

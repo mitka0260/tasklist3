@@ -2,6 +2,11 @@ package com.example.tasklist3.config;
 
 import com.example.tasklist3.web.security.JwtTokenFilter;
 import com.example.tasklist3.web.security.JwtTokenProvider;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -37,24 +42,25 @@ public class ApplicationConfig {
     return configuration.getAuthenticationManager();
   }
 
-//    @Bean
-//    public OpenAPI openAPI() {
-//        return new OpenAPI()
-//                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-//                .components(
-//                        new Components()
-//                                .addSecuritySchemes("bearerAuth",
-//                                        new SecurityScheme()
-//                                                .type(SecurityScheme.Type.HTTP)
-//                                                .scheme("bearer")
-//                                                .bearerFormat("JWT"))
-//                )
-//                .info(new Info()
-//                        .title("Task list API")
-//                        .description("Demo Sprint Boot application")
-//                        .version("1.0")
-//                );
-//    }
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                .components(
+                        new Components()
+                                .addSecuritySchemes("bearerAuth",
+                                        new SecurityScheme()
+                                                .type(SecurityScheme.Type.HTTP)
+                                                .scheme("bearer")
+                                                .bearerFormat("JWT")
+                                )
+                )
+                .info(new Info()
+                        .title("Task list API")
+                        .description("Demo Spring Boot application")
+                        .version("1.0")
+                );
+    }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) /*throws Exception*/ {
@@ -103,8 +109,8 @@ public class ApplicationConfig {
       )
       .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
         .requestMatchers("/api/v1/auth/**").permitAll() // чтобы смог залогиниться и зарегистрироваться
-        // .requestMatchers("/swagger-ui/**").permitAll()
-        // .requestMatchers("/v3/api-docs/**").permitAll()
+        .requestMatchers("/swagger-ui/**").permitAll()
+        .requestMatchers("/v3/api-docs/**").permitAll()
         .anyRequest().authenticated()
       )
       // отключено анонимное посещение, надо для Custom Security Expressions

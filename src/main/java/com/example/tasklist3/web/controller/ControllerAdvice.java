@@ -6,6 +6,7 @@ import com.example.tasklist3.domain.exception.ResourceMappingException;
 import com.example.tasklist3.domain.exception.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
