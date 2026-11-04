@@ -8,14 +8,12 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,12 +26,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableMethodSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true) // deprecated
 @RequiredArgsConstructor(onConstructor_ = {@Lazy}) // (onConstructor = @__(@Lazy))
 public class ApplicationConfig {
 
-//  private final ApplicationContext applicationContext;
+  //  private final ApplicationContext applicationContext;
   private final JwtTokenProvider tokenProvider;
 
   @Bean
@@ -46,25 +44,32 @@ public class ApplicationConfig {
     return configuration.getAuthenticationManager();
   }
 
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-                .components(
-                        new Components()
-                                .addSecuritySchemes("bearerAuth",
-                                        new SecurityScheme()
-                                                .type(SecurityScheme.Type.HTTP)
-                                                .scheme("bearer")
-                                                .bearerFormat("JWT")
-                                )
-                )
-                .info(new Info()
-                        .title("Task list API")
-                        .description("Demo Spring Boot application")
-                        .version("1.0")
-                );
-    }
+//  @Bean
+//  public MethodSecurityExpressionHandler expressionHandler(ApplicationContext applicationContext) {
+//    DefaultMethodSecurityExpressionHandler expressionHandler = new CustomMethodSecurityExceptionHandler();
+//    expressionHandler.setApplicationContext(applicationContext);
+//    return expressionHandler;
+//  }
+
+  @Bean
+  public OpenAPI openAPI() {
+    return new OpenAPI()
+      .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+      .components(
+        new Components()
+          .addSecuritySchemes("bearerAuth",
+            new SecurityScheme()
+              .type(SecurityScheme.Type.HTTP)
+              .scheme("bearer")
+              .bearerFormat("JWT")
+          )
+      )
+      .info(new Info()
+        .title("Task list API")
+        .description("Demo Spring Boot application")
+        .version("1.0")
+      );
+  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) /*throws Exception*/ {
