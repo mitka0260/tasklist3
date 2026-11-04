@@ -196,6 +196,8 @@ http://localhost:8080/swagger-ui/index.html
 Security expression - проверка есть у пользователя права доступа ук данному энд-поинту
 2 способа
 
+Docker - docker compose up
+
 
 
 
