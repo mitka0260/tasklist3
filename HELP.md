@@ -196,7 +196,16 @@ http://localhost:8080/swagger-ui/index.html
 Security expression - проверка есть у пользователя права доступа ук данному энд-поинту
 2 способа
 
-Docker - docker compose up
+Docker
+запустить докер
+Dockerfile - конфигурация, которая собирает приложение + копирует в контейнер + запускает
+docker-compose.yaml
+maven - tasklist - lifecycle - 1) clean, 2) package
+terminal - docker compose up
+docker compose up --build - чтобы пересобрал все контейнеры (если указан postgres:5432, а он подключается к localhost:5433 и падает liquibase)
+теперь работает из контейнера (работает сваггер если приложение не запущено)
+
+resources / db-init - эта папка будет добавляться в докер-контейнер - будет инициализировать БД ликвибейзом - ликвибейз будет создавать схему
 
 
 

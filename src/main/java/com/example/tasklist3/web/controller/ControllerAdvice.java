@@ -73,13 +73,14 @@ public class ControllerAdvice {
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleAuthentication(AuthenticationException e) {
+        System.out.println("Authentication failed: " + e.getMessage());
         return new ExceptionBody("Authentication failed");
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handleException(Exception e) {
-        System.out.println("HERE: " + e.toString());
+        System.out.println("Internal error: " + e.toString());
         return new ExceptionBody("Internal error.");
     }
 

@@ -1,19 +1,34 @@
 spring:
 
   application:
-    name: tasklist3 
+    name: tasklist3
+
+  config:
+    import: optional:file:.env[.properties]
+
+  cache:
+    type: redis
+    cache-names: redis-cache
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: 6379
+      password: ${REDIS_PASSWORD}
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/tasklist3?currentSchema=tasklist3
-    username: postgres
-    password: klop0987
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
+#    url: jdbc:postgresql://localhost:5433/tasklist3?currentSchema=tasklist3
+#    url: jdbc:postgresql://db:5432/tasklist3?currentSchema=tasklist3
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
-  sql:
-    init:
+#  sql:
+#    init:
 #      mode: always
-      mode: never
-      continue-on-error: false
+#      mode: never
+#      continue-on-error: false
 #      надо запустить только один раз - данные не будут вставляться дважды (либо на 2 строки выше поставить mode: never)
 #      data-locations: classpath:demo_data.sql
 
@@ -29,9 +44,9 @@ mybatis:
 # some string for my secret for spring security and Jwt authorization. This string must be enough long to protect my application from fucking hackers.
 security:
   jwt:
-    secret: c29tZSBzdHJpbmcgZm9yIG15IHNlY3JldCBmb3Igc3ByaW5nIHNlY3VyaXR5IGFuZCBKd3QgYXV0aG9yaXphdGlvbi4gVGhpcyBzdHJpbmcgbXVzdCBiZSBlbm91Z2ggbG9uZyB0byBwcm90ZWN0IG15IGFwcGxpY2F0aW9uIGZyb20gZnVja2luZyBoYWNrZXJzLg==
-    access: 3600000
-    refresh: 2592000000
+    secret: ${JWT_SECRET}
+    access: 1
+    refresh: 30
 
 springdoc:
   override-with-generic-response: false

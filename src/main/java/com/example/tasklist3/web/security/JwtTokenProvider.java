@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -62,10 +64,10 @@ public class JwtTokenProvider {
                 .add("roles", resolveRoles(roles))
                 .build();
 
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + jwtProperties.getAccess()); // когда токен умрёт
-//        Instant validity = Instant.now()
-//                .plus(jwtProperties.getAccess(), ChronoUnit.HOURS);
+//        Date now = new Date();
+//        Date validity = new Date(now.getTime() + jwtProperties.getAccess()); // когда токен умрёт
+        Instant validity = Instant.now()
+                .plus(jwtProperties.getAccess(), ChronoUnit.HOURS);
 
         // from video
 //        return Jwts.builder()
@@ -78,9 +80,9 @@ public class JwtTokenProvider {
         // for newer versions
         return Jwts.builder()
                 .claims(claims)
-                .issuedAt(now)  // new Date(System.currentTimeMillis())
-                .expiration(validity)   // new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10) // 10 hours
-                // .expiration(Date.from(validity))
+//                .issuedAt(now)  // new Date(System.currentTimeMillis())
+//                .expiration(validity)   // new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10) // 10 hours
+                 .expiration(Date.from(validity))
                 .signWith(key)  // getSignInKey(), Jwts.SIG.HS256
                 .compact();
     }
@@ -104,10 +106,10 @@ public class JwtTokenProvider {
                 .add("id", userId)
                 .build();
 
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + jwtProperties.getRefresh());
-//        Instant validity = Instant.now()
-//                .plus(jwtProperties.getRefresh(), ChronoUnit.DAYS);
+//        Date now = new Date();
+//        Date validity = new Date(now.getTime() + jwtProperties.getRefresh());
+        Instant validity = Instant.now()
+                .plus(jwtProperties.getRefresh(), ChronoUnit.DAYS);
 
 //        return Jwts.builder()
 //                .setClaims(claims)
@@ -117,9 +119,9 @@ public class JwtTokenProvider {
 //                .compact();
         return Jwts.builder()
                 .claims(claims)
-                .issuedAt(now)  // new Date(System.currentTimeMillis())
-                .expiration(validity)   // new Date(System.currentTimeMillis() + 1000* 60 * 60 *10) // 10 hours
-                // .expiration(Date.from(validity))
+//                .issuedAt(now)  // new Date(System.currentTimeMillis())
+//                .expiration(validity)   // new Date(System.currentTimeMillis() + 1000* 60 * 60 *10) // 10 hours
+                 .expiration(Date.from(validity))
                 .signWith(key)  // getSignInKey(), Jwts.SIG.HS256
                 .compact();
     }

@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -49,6 +51,11 @@ public class ApplicationConfig {
 //    DefaultMethodSecurityExpressionHandler expressionHandler = new CustomMethodSecurityExceptionHandler();
 //    expressionHandler.setApplicationContext(applicationContext);
 //    return expressionHandler;
+//  }
+
+//  @Bean
+//  public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+//    return RedisCacheManager.create(connectionFactory);
 //  }
 
   @Bean

@@ -1,5 +1,11 @@
 version: '4'
 
+volumes:
+  cache:
+    driver: local
+  db-data:
+    driver: local
+
 services:
   app:
     build:
@@ -7,18 +13,33 @@ services:
     container_name: tasklist3
     depends_on:
       - db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tasklist3?currentSchema=tasklist3
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=klop0987
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tasklist3?currentSchema=tasklist3
+#      - SPRING_DATASOURCE_USERNAME=postgres
+#      - SPRING_DATASOURCE_PASSWORD=klop0987
+    env_file:
+      - .env
     ports:
       - '8080:8080'
   db:
     image: postgres:17.5-alpine
     container_name: postgres
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=klop0987
-      - POSTGRES_DB=tasklist3
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - '5430:5432'
     volumes:
       - ./src/main/resources/db-init:/docker-entrypoint-initdb.d
+      - db-data:/var/lib/postgresql/data  # После перезапуска контейнера БД будет сохраняться. db-data - сохраняется докером, /var/lib/... - сама БД
+
+  redis:
+    image: redis:8.2-alpine
+    restart: always
+    container_name: redis
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - cache:/data
