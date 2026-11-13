@@ -21,8 +21,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             """, nativeQuery = true)
   List<Task> findAllByUserId(@Param("userId") Long userId);
 
-  // При создании таски, эта таска ничья. Этот метод связывает таску с пользователем
-//  void assignToUserById(@Param("taskId") Long taskId, @Param("userId") Long userId);
+  // При создании таски, эта таска ничья.
+  // Этот метод связывает таску с пользователем
+//  void assignToUserById(
+//    @Param("taskId") Long taskId,
+//    @Param("userId") Long userId
+//  );
 
 // Эти два метода заменяются на save()
 //  void update(Task task);

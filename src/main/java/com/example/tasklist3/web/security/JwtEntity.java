@@ -15,7 +15,8 @@ public class JwtEntity implements UserDetails {
     private final String username;
     private final String name;
     private final String password;
-    private final Collection<? extends GrantedAuthority> authorities; // коллекция ролей и полномочий
+    // коллекция ролей и полномочий
+    private final Collection<? extends GrantedAuthority> authorities;
 
     // 3 метода внизу методы создала аннотация @Data (создала геттеры)
     // @Override

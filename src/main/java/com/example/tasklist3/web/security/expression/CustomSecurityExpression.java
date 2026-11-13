@@ -15,10 +15,12 @@ public class CustomSecurityExpression {
 
   private final UserService userService;
 
-  // Может ли сейчас авторизированный пользователь обращаться к пользователю с id
-  public boolean canAccessUser(Long id) {
-    // Аутентификацию сетаем в jwtTokenFilter => doFilter => setAuthentification
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  // Может ли сейчас авторизированный пользователь обращаться к польз-лю с id
+  public boolean canAccessUser(final Long id) {
+    // Аутентификацию сетаем в jwtTokenFilter => doFilter=>setAuthentification
+    Authentication authentication = SecurityContextHolder
+      .getContext()
+      .getAuthentication();
 
     JwtEntity user = (JwtEntity) authentication.getPrincipal();
     Long userId = user.getId();
@@ -27,10 +29,15 @@ public class CustomSecurityExpression {
     return userId.equals(id) || hasAnyRole(authentication, Role.ROLE_ADMIN);
   }
 
-  private boolean hasAnyRole(Authentication authentication, Role... roles) {
+  private boolean hasAnyRole(
+    final Authentication authentication,
+    final Role... roles
+  ) {
 
     for (Role role : roles) {
-      SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.name());
+      SimpleGrantedAuthority authority = new SimpleGrantedAuthority(
+        role.name()
+      );
       if (authentication.getAuthorities().contains(authority)) {
         return true;
       }
@@ -38,8 +45,9 @@ public class CustomSecurityExpression {
     return false;
   }
 
-  public boolean canAccessTask(Long taskId) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  public boolean canAccessTask(final Long taskId) {
+    Authentication authentication = SecurityContextHolder
+      .getContext().getAuthentication();
     JwtEntity user = (JwtEntity) authentication.getPrincipal();
     Long userId = user.getId();
 
