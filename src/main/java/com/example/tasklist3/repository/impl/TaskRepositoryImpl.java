@@ -16,7 +16,9 @@
 //@RequiredArgsConstructor
 //public class TaskRepositoryImpl implements TaskRepository {
 //
-//  // NB! Везде одна и та же ошибка -- Connection и PreparedStatement не закрываются в случае эксепшена при обращении к БД.
+//  // NB! Везде одна и та же ошибка:
+//  //    Connection и PreparedStatement не закрываются в случае
+//  //    эксепшена при обращении к БД.
 //
 //  private final DataSourceConfig dataSourceConfig;
 //
@@ -61,14 +63,18 @@
 //  public List<Task> findAllByUserId(Long userId) {
 //    try {
 //      Connection connection = dataSourceConfig.getConnection();
-//      PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_USER_ID);
+//      PreparedStatement statement = connection.prepareStatement(
+//        FIND_ALL_BY_USER_ID
+//      );
 //      statement.setLong(1, userId);
 //
 //      try (ResultSet resultSet = statement.executeQuery()) { // == SELECT
 //        return TaskRowMapper.mapRows(resultSet);
 //      }
 //    } catch (SQLException throwable) {
-//      throw new ResourceMappingException("Error while finding all by user id.");
+//      throw new ResourceMappingException(
+//        "Error while finding all by user id."
+//      );
 //    }
 //  }
 //
@@ -86,7 +92,9 @@
 //      statement.setLong(2, userId);
 //      statement.executeUpdate();
 //    } catch (SQLException throwable) {
-//      throw new ResourceMappingException("Error while assigning task to user.");
+//      throw new ResourceMappingException(
+//        "Error while assigning task to user."
+//      );
 //    }
 //  }
 //
@@ -107,7 +115,8 @@
 //      statement.setString(1, task.getTitle());
 //
 //      if (task.getDescription() == null) {
-//        statement.setNull(2, Types.VARCHAR); // NULL типа Варчар (пишем null в столбец, у столбца тип VARCHAR)
+          // NULL типа Варчар (пишем null в столбец, у столбца тип VARCHAR)
+//        statement.setNull(2, Types.VARCHAR);
 //      } else {
 //        statement.setString(2, task.getDescription());
 //      }
@@ -115,7 +124,10 @@
 //      if (task.getExpirationDate() == null) {
 //        statement.setNull(3, Types.TIMESTAMP);
 //      } else {
-//        statement.setTimestamp(3, Timestamp.valueOf(task.getExpirationDate()));
+//        statement.setTimestamp(
+//          3,
+//          Timestamp.valueOf(task.getExpirationDate())
+//        );
 //      }
 //
 //      statement.setString(4, task.getStatus().name());
@@ -136,7 +148,10 @@
 //  public void create(Task task) {
 //    try {
 //      Connection connection = dataSourceConfig.getConnection();
-//      PreparedStatement statement = connection.prepareStatement(CREATE, PreparedStatement.RETURN_GENERATED_KEYS);
+//      PreparedStatement statement = connection.prepareStatement(
+//        CREATE,
+//        PreparedStatement.RETURN_GENERATED_KEYS
+//      );
 //
 //      statement.setString(1, task.getTitle());
 //
@@ -149,7 +164,9 @@
 //      if (task.getExpirationDate() == null) {
 //        statement.setNull(3, Types.TIMESTAMP);
 //      } else {
-//        statement.setTimestamp(3, Timestamp.valueOf(task.getExpirationDate()));
+//        statement.setTimestamp(3, Timestamp.valueOf(
+//          task.getExpirationDate())
+//        );
 //      }
 //
 //      statement.setString(4, task.getStatus().name());
