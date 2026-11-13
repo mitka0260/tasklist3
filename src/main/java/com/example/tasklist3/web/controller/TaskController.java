@@ -1,9 +1,12 @@
 package com.example.tasklist3.web.controller;
 
 import com.example.tasklist3.domain.task.Task;
+import com.example.tasklist3.domain.task.TaskImage;
 import com.example.tasklist3.service.TaskService;
 import com.example.tasklist3.web.dto.task.TaskDto;
+import com.example.tasklist3.web.dto.task.TaskImageDto;
 import com.example.tasklist3.web.dto.validation.OnUpdate;
+import com.example.tasklist3.web.mappers.TaskImageMapper;
 import com.example.tasklist3.web.mappers.TaskMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,7 +23,9 @@ import org.springframework.web.bind.annotation.*;
 public class TaskController {
 
   private final TaskService taskService;
+
   private final TaskMapper taskMapper;
+  private final TaskImageMapper taskImageMapper;
 
   @PutMapping
   @Operation(summary = "Update task")
@@ -44,6 +49,15 @@ public class TaskController {
   @PreAuthorize("@customMethodSecurityExpressionRoot.canAccessTask(#id)")
   public void deleteById(@PathVariable Long id) {
     taskService.delete(id);
+  }
+
+  @PostMapping("/{id}/image")
+  @Operation(summary = "Upload image to task")
+  @PreAuthorize("@customMethodSecurityExpressionRoot.canAccessTask(#id)")
+  public void uploadImage(@PathVariable Long id,
+                          @Validated @ModelAttribute TaskImageDto imageDto) {
+    TaskImage image = taskImageMapper.toEntity(imageDto);
+    taskService.uploadImage(id, image);
   }
 
 }

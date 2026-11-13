@@ -8,11 +8,12 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 //@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface TaskMapper {
+public interface TaskMapper extends Mappable<Task, TaskDto> {
 
-  TaskDto toDto(Task task);
+//  TaskDto toDto(Task task);
 
-  List<TaskDto> toDto(List<Task> tasks);
+//  List<TaskDto> toDto(List<Task> tasks);
 
-  Task toEntity(TaskDto dto);
+//  Task toEntity(TaskDto dto);
+
 }

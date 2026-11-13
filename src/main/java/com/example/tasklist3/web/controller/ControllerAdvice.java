@@ -1,12 +1,8 @@
 package com.example.tasklist3.web.controller;
 
-import com.example.tasklist3.domain.exception.AccessDeniedException;
-import com.example.tasklist3.domain.exception.ExceptionBody;
-import com.example.tasklist3.domain.exception.ResourceMappingException;
-import com.example.tasklist3.domain.exception.ResourceNotFoundException;
+import com.example.tasklist3.domain.exception.*;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -73,8 +69,15 @@ public class ControllerAdvice {
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleAuthentication(AuthenticationException e) {
+        System.out.println(e.toString());
         System.out.println("Authentication failed: " + e.getMessage());
         return new ExceptionBody("Authentication failed");
+    }
+
+    @ExceptionHandler(ImageUploadException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionBody handleImageUploadException(ImageUploadException e) {
+            return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

@@ -1,95 +1,95 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper-->
+<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
 
-<mapper namespace="com.example.tasklist3.repository.UserRepository"> <!-- ссылка на интерфейс репозитория -->
-    <resultMap id="UserResultMap" type="com.example.tasklist3.domain.user.User" autoMapping="false"> <!-- строки переводит в объекты, autoMapping: false позволяет избежать ошибок автоматического маппинга -->
-        <id property="id" column="user_id" />   <!-- описание как связываются колонки в БД с объектом, user_id - алиас в SQL'e { id: 1 } <=> БД.колонка.user_id-->
-        <result property="name" column="user_name" />
-        <result property="username" column="user_username" />
-        <result property="password" column="user_password" />
+<!--<mapper namespace="com.example.tasklist3.repository.UserRepository"> &lt;!&ndash; ссылка на интерфейс репозитория &ndash;&gt;-->
+<!--    <resultMap id="UserResultMap" type="com.example.tasklist3.domain.user.User" autoMapping="false"> &lt;!&ndash; строки переводит в объекты, autoMapping: false позволяет избежать ошибок автоматического маппинга &ndash;&gt;-->
+<!--        <id property="id" column="user_id" />   &lt;!&ndash; описание как связываются колонки в БД с объектом, user_id - алиас в SQL'e { id: 1 } <=> БД.колонка.user_id&ndash;&gt;-->
+<!--        <result property="name" column="user_name" />-->
+<!--        <result property="username" column="user_username" />-->
+<!--        <result property="password" column="user_password" />-->
 
-        <!-- сетаем коллекцию ролей и тасок: -->
-        <collection property="roles"
-                    ofType="com.example.tasklist3.domain.user.Role"
-                    autoMapping="false">
-            <result property="name" column="user_role_role" />  <!-- маппим enum - у него есть единственное поле name -->
-        </collection>
-        <collection property="tasks"
-                    ofType="com.example.tasklist3.domain.task.Task"
-                    resultMap="com.example.tasklist3.repository.TaskRepository.TaskResultMap"
-                    autoMapping="false" />   <!-- ссылка на resultMap для таски -->
+<!--        &lt;!&ndash; сетаем коллекцию ролей и тасок: &ndash;&gt;-->
+<!--        <collection property="roles"-->
+<!--                    ofType="com.example.tasklist3.domain.user.Role"-->
+<!--                    autoMapping="false">-->
+<!--            <result property="name" column="user_role_role" />  &lt;!&ndash; маппим enum - у него есть единственное поле name &ndash;&gt;-->
+<!--        </collection>-->
+<!--        <collection property="tasks"-->
+<!--                    ofType="com.example.tasklist3.domain.task.Task"-->
+<!--                    resultMap="com.example.tasklist3.repository.TaskRepository.TaskResultMap"-->
+<!--                    autoMapping="false" />   &lt;!&ndash; ссылка на resultMap для таски &ndash;&gt;-->
 
-<!-- так делают связи OneToOne, OneToMany etc -->
-<!--   <association property="" />-->
-    </resultMap>
+<!--&lt;!&ndash; так делают связи OneToOne, OneToMany etc &ndash;&gt;-->
+<!--&lt;!&ndash;   <association property="" />&ndash;&gt;-->
+<!--    </resultMap>-->
 
-    <select id="findById" resultMap="UserResultMap">
-        SELECT  u.id as user_id,
-                u.name as user_name,
-                u.username as user_username,
-                u.password as user_password,
-                ur.role as user_role_role,
-                t.id as task_id,
-                t.title as task_title,
-                t.description as task_description,
-                t.expiration_date as task_expiration_date,
-                t.status as task_status
-        FROM users u
-            LEFT JOIN users_roles ur ON u.id = ur.user_id
-            LEFT JOIN users_tasks ut ON u.id = ut.user_id
-            LEFT JOIN tasks t ON ut.task_id = t.id
-        WHERE u.id = #{id}
-    </select>
+<!--    <select id="findById" resultMap="UserResultMap">-->
+<!--        SELECT  u.id as user_id,-->
+<!--                u.name as user_name,-->
+<!--                u.username as user_username,-->
+<!--                u.password as user_password,-->
+<!--                ur.role as user_role_role,-->
+<!--                t.id as task_id,-->
+<!--                t.title as task_title,-->
+<!--                t.description as task_description,-->
+<!--                t.expiration_date as task_expiration_date,-->
+<!--                t.status as task_status-->
+<!--        FROM users u-->
+<!--            LEFT JOIN users_roles ur ON u.id = ur.user_id-->
+<!--            LEFT JOIN users_tasks ut ON u.id = ut.user_id-->
+<!--            LEFT JOIN tasks t ON ut.task_id = t.id-->
+<!--        WHERE u.id = #{id}-->
+<!--    </select>-->
 
-    <select id="findByUsername" resultMap="UserResultMap">
-        SELECT  u.id as user_id,
-                u.name as user_name,
-                u.username as user_username,
-                u.password as user_password,
-                ur.role as user_role_role,
-                t.id as task_id,
-                t.title as task_title,
-                t.description as task_description,
-                t.expiration_date as task_expiration_date,
-                t.status as task_status
-        FROM users u
-            LEFT JOIN users_roles ur ON u.id = ur.user_id
-            LEFT JOIN users_tasks ut ON u.id = ut.user_id
-            LEFT JOIN tasks t ON ut.task_id = t.id
-        WHERE u.username = #{username}
-    </select>
+<!--    <select id="findByUsername" resultMap="UserResultMap">-->
+<!--        SELECT  u.id as user_id,-->
+<!--                u.name as user_name,-->
+<!--                u.username as user_username,-->
+<!--                u.password as user_password,-->
+<!--                ur.role as user_role_role,-->
+<!--                t.id as task_id,-->
+<!--                t.title as task_title,-->
+<!--                t.description as task_description,-->
+<!--                t.expiration_date as task_expiration_date,-->
+<!--                t.status as task_status-->
+<!--        FROM users u-->
+<!--            LEFT JOIN users_roles ur ON u.id = ur.user_id-->
+<!--            LEFT JOIN users_tasks ut ON u.id = ut.user_id-->
+<!--            LEFT JOIN tasks t ON ut.task_id = t.id-->
+<!--        WHERE u.username = #{username}-->
+<!--    </select>-->
 
-    <update id="update">
-        UPDATE users
-        SET name = #{name},
-            username = #{username},
-            password = #{password}
-        WHERE id = #{id}
-    </update>
+<!--    <update id="update">-->
+<!--        UPDATE users-->
+<!--        SET name = #{name},-->
+<!--            username = #{username},-->
+<!--            password = #{password}-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
 
-    <insert id="create" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
-        INSERT INTO users (name, username, password)
-        VALUES (#{name}, #{username}, #{password})
-    </insert>
+<!--    <insert id="create" keyProperty="id" keyColumn="id" useGeneratedKeys="true">-->
+<!--        INSERT INTO users (name, username, password)-->
+<!--        VALUES (#{name}, #{username}, #{password})-->
+<!--    </insert>-->
 
-    <insert id="insertUserRole">
-        INSERT INTO users_roles (user_id, role)
-        VALUES (#{userId}, #{role})
-    </insert>
+<!--    <insert id="insertUserRole">-->
+<!--        INSERT INTO users_roles (user_id, role)-->
+<!--        VALUES (#{userId}, #{role})-->
+<!--    </insert>-->
 
-    <select id="isTaskOwner" resultType="boolean">
-        SELECT EXISTS(
-                    SELECT 1
-                    FROM users_tasks
-                    WHERE user_id = #{userId}
-                    AND task_id = #{taskId}
-        )
-    </select>
+<!--    <select id="isTaskOwner" resultType="boolean">-->
+<!--        SELECT EXISTS(-->
+<!--                    SELECT 1-->
+<!--                    FROM users_tasks-->
+<!--                    WHERE user_id = #{userId}-->
+<!--                    AND task_id = #{taskId}-->
+<!--        )-->
+<!--    </select>-->
 
-    <delete id="delete">
-        DELETE FROM users
-        WHERE id = #{id}
-    </delete>
-</mapper>
+<!--    <delete id="delete">-->
+<!--        DELETE FROM users-->
+<!--        WHERE id = #{id}-->
+<!--    </delete>-->
+<!--</mapper>-->

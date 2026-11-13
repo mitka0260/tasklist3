@@ -1,60 +1,60 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper-->
+<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
 
-<mapper namespace="com.example.tasklist3.repository.TaskRepository">
-    <resultMap id="TaskResultMap" type="com.example.tasklist3.domain.task.Task" autoMapping="false">
-        <id property="id" column="task_id" />
-        <result property="title" column="task_title" />
-        <result property="description" column="task_description" />
-        <result property="expirationDate" column="task_expiration_date" />
-        <result property="status" column="task_status" />
-    </resultMap>
+<!--<mapper namespace="com.example.tasklist3.repository.TaskRepository">-->
+<!--    <resultMap id="TaskResultMap" type="com.example.tasklist3.domain.task.Task" autoMapping="false">-->
+<!--        <id property="id" column="task_id" />-->
+<!--        <result property="title" column="task_title" />-->
+<!--        <result property="description" column="task_description" />-->
+<!--        <result property="expirationDate" column="task_expiration_date" />-->
+<!--        <result property="status" column="task_status" />-->
+<!--    </resultMap>-->
 
-    <select id="findById" resultMap="TaskResultMap">
-        SELECT t.id                 as task_id,
-               t.title              as task_title,
-               t.description        as task_description,
-               t.expiration_date    as task_expiration_date,
-               t.status             as task_status
-        FROM tasks t
-        WHERE t.id = #{id}
-    </select>
+<!--    <select id="findById" resultMap="TaskResultMap">-->
+<!--        SELECT t.id                 as task_id,-->
+<!--               t.title              as task_title,-->
+<!--               t.description        as task_description,-->
+<!--               t.expiration_date    as task_expiration_date,-->
+<!--               t.status             as task_status-->
+<!--        FROM tasks t-->
+<!--        WHERE t.id = #{id}-->
+<!--    </select>-->
 
-    <select id="findAllByUserId" resultMap="TaskResultMap">
-        SELECT t.id                 as task_id,
-               t.title              as task_title,
-               t.description        as task_description,
-               t.expiration_date    as task_expiration_date,
-               t.status             as task_status
-        FROM tasks t
-        JOIN users_tasks ut ON t.id = ut.task_id
-        WHERE ut.user_id = #{userId}
-    </select>
+<!--    <select id="findAllByUserId" resultMap="TaskResultMap">-->
+<!--        SELECT t.id                 as task_id,-->
+<!--               t.title              as task_title,-->
+<!--               t.description        as task_description,-->
+<!--               t.expiration_date    as task_expiration_date,-->
+<!--               t.status             as task_status-->
+<!--        FROM tasks t-->
+<!--        JOIN users_tasks ut ON t.id = ut.task_id-->
+<!--        WHERE ut.user_id = #{userId}-->
+<!--    </select>-->
 
-    <update id="update">
-        UPDATE tasks
-        SET title = #{title},
-            description = #{description},
-            expiration_date = #{expirationDate},
-            status = #{status}
-        WHERE id = #{id}
-    </update>
+<!--    <update id="update">-->
+<!--        UPDATE tasks-->
+<!--        SET title = #{title},-->
+<!--            description = #{description},-->
+<!--            expiration_date = #{expirationDate},-->
+<!--            status = #{status}-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
 
-    <insert id="assignToUserById">
-        INSERT INTO users_tasks (task_id, user_id)
-        VALUES (#{taskId}, #{userId})
-    </insert>
+<!--    <insert id="assignToUserById">-->
+<!--        INSERT INTO users_tasks (task_id, user_id)-->
+<!--        VALUES (#{taskId}, #{userId})-->
+<!--    </insert>-->
 
-    <insert id="create" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
-        INSERT INTO tasks (title, description, expiration_date, status)
-        VALUES (#{title}, #{description}, #{expirationDate}, #{status})
-        <!-- Т.к. метод принимает только один объект, то не надо писать через точку #{task.id} etc -->
-    </insert>
-    
-    <delete id="delete">
-        DELETE FROM tasks
-        WHERE id = #{id}
-    </delete>
-</mapper>
+<!--    <insert id="create" keyProperty="id" keyColumn="id" useGeneratedKeys="true">-->
+<!--        INSERT INTO tasks (title, description, expiration_date, status)-->
+<!--        VALUES (#{title}, #{description}, #{expirationDate}, #{status})-->
+<!--        &lt;!&ndash; Т.к. метод принимает только один объект, то не надо писать через точку #{task.id} etc &ndash;&gt;-->
+<!--    </insert>-->
+<!--    -->
+<!--    <delete id="delete">-->
+<!--        DELETE FROM tasks-->
+<!--        WHERE id = #{id}-->
+<!--    </delete>-->
+<!--</mapper>-->

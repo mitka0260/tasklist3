@@ -37,11 +37,11 @@ spring:
     enabled: true
     default-schema: tasklist3
 
-mybatis:
-  mapper-locations: classpath:mybatis/mapper/*.xml
+#mybatis:
+#  mapper-locations: classpath:mybatis/mapper/*.xml
 
 # https://www.base64encode.net/ -> someLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongStringsomeLongString
-# some string for my secret for spring security and Jwt authorization. This string must be enough long to protect my application from fucking hackers.
+# some string for my secret for Spring Security and Jwt authorization. This string must be enough long to protect my application from fucking hackers.
 security:
   jwt:
     secret: ${JWT_SECRET}
@@ -50,3 +50,9 @@ security:
 
 springdoc:
   override-with-generic-response: false
+
+minio:
+  bucket: ${MINIO_BUCKET}
+  url: ${MINIO_URL}
+  accessKey: ${MINIO_ACCESS_KEY}
+  secretKey: ${MINIO_SECRET_KEY}

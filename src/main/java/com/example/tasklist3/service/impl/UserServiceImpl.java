@@ -47,7 +47,8 @@ public class UserServiceImpl implements UserService {
   })
   public User update(User user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    userRepository.update(user);
+//    userRepository.update(user);
+    userRepository.save(user);
     return user;
   }
 
@@ -66,10 +67,11 @@ public class UserServiceImpl implements UserService {
     }
 
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    userRepository.create(user);
+//    userRepository.create(user);
     Set<Role> roles = Set.of(Role.ROLE_USER);
-    userRepository.insertUserRole(user.getId(), Role.ROLE_USER);
+//    userRepository.insertUserRole(user.getId(), Role.ROLE_USER);
     user.setRoles(roles);
+    userRepository.save(user);
     return user;
   }
 
@@ -87,7 +89,8 @@ public class UserServiceImpl implements UserService {
 //    @CacheEvict(value = "UserService::getByUsername", key = "#username") // убрал т.к здесь нет username
   })
   public void delete(Long id) {
-    userRepository.delete(id);
+//    userRepository.delete(id);
+    userRepository.deleteById(id);
   }
 
 }
