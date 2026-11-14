@@ -1,4 +1,4 @@
-Spring Boot [КУРС]
+Spring Boot (КУРС)
 https://www.youtube.com/playlist?list=PL3Ur78l82EFD8OKSulH3NaK1As4G7YWMJ
 Ilya Lisov
 
@@ -218,6 +218,16 @@ resources / db-init - эта папка будет добавляться в д�
 JPA - без написания SQL обращаемся к БД, не думаем про то как смапить объекты, как не опечаться
 
 S3 хранилище для хранения файлов (используем бесплатный аналог minio)
+
+// =======================
+// Видео8
+
+Checkstyle
+mvn => install - так запускается checkstyle
+
+Github actions
+
+
 
 
 

@@ -12,8 +12,10 @@ import org.springframework.stereotype.Component;
 public class CustomMethodSecurityExpressionRoot {
   private final UserService userService;
 
-  public boolean canAccessTask(Long taskId) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  public boolean canAccessTask(final Long taskId) {
+    Authentication authentication = SecurityContextHolder
+      .getContext()
+      .getAuthentication();
     JwtEntity user = (JwtEntity) authentication.getPrincipal();
     Long userId = user.getId();
 
@@ -21,14 +23,16 @@ public class CustomMethodSecurityExpressionRoot {
   }
 }
 
-/**
- * Внизу показан 2-ой способ делать CustomSecurityExpression. Но этот способ не работает в Spring Security 7.
- * Оставил 1-ый способ чтобы не тормозить.
- * */
+
+ // Внизу показан 2-й способ делать CustomSecurityExpression.
+ // Но этот способ не работает в Spring Security 7.
+ // Оставил 1-й способ чтобы не тормозить.
 
 //@Setter
 //@Getter
-//public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot implements MethodSecurityExpressionOperations {
+//public class CustomMethodSecurityExpressionRoot
+//  extends SecurityExpressionRoot
+//  implements MethodSecurityExpressionOperations {
 
 //  private Object filterObject;
 //  private Object returnObject;
@@ -60,7 +64,8 @@ public class CustomMethodSecurityExpressionRoot {
 ////  }
 //
 //  public boolean canAccessUser(Long id) {
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    Authentication authentication = SecurityContextHolder
+//      .getContext().getAuthentication();
 //
 //    JwtEntity user = (JwtEntity) authentication.getPrincipal();
 //    Long userId = user.getId();
@@ -71,7 +76,9 @@ public class CustomMethodSecurityExpressionRoot {
 //  private boolean hasAnyRole(Authentication authentication, Role... roles) {
 //
 //    for (Role role : roles) {
-//      SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.name());
+//      SimpleGrantedAuthority authority = new SimpleGrantedAuthority(
+//        role.name()
+//      );
 //      if (authentication.getAuthorities().contains(authority)) {
 //        return true;
 //      }
@@ -81,7 +88,8 @@ public class CustomMethodSecurityExpressionRoot {
 //
 //  public boolean canAccessTask(Long taskId) {
 //    System.out.println("canAccessTask");
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    Authentication authentication = SecurityContextHolder
+//      .getContext().getAuthentication();
 //    JwtEntity user = (JwtEntity) authentication.getPrincipal();
 //    Long userId = user.getId();
 //

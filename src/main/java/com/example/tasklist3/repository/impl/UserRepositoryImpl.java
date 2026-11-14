@@ -19,7 +19,9 @@
 //@RequiredArgsConstructor
 //public class UserRepositoryImpl implements UserRepository {
 //
-//  // NB! везде одна и та же ошибка -- Connection и PreparedStatement не закрываются в случае эксепшена при обращении к БД.
+//  // NB! Везде одна и та же ошибка:
+//  //   Connection и PreparedStatement не закрываются в случае
+//  //   эксепшена при обращении к БД.
 //  // Надо try-with-resources:
 //  //  try (
 //  //    Connection connection = dataSourceConfig.getConnection();
@@ -79,15 +81,19 @@
 //      PreparedStatement statement = connection.prepareStatement(
 //        FIND_BY_ID,
 //        // Настройки поведения результирующей таблицы (ResultSet).
-//        // Scroll — позволяет перемещаться по полученным строкам вперед next(), назад previous(), а также переходить к конкретной строке (absolute(), relative()).
-//        // Insensitive — результат нечувствителен к изменениям в базе данных, которые происходят после выполнения запроса
+//        // Scroll — позволяет перемещаться по полученным строкам
+//        // вперед next(), назад previous(),
+//        // а также переходить к конкретной строке (absolute(), relative()).
+//        // Insensitive — результат нечувствителен к изменениям в базе данных,
+//        // которые происходят после выполнения запроса
 //        // Будем ходить по ResultSet вперёд и назад, и в начало
 //        // NB! Из-за JOIN'ов будем проходить таблицу несколько раз
 //        // Нужно, чтобы прочитать весь список
 //        // Потом список ролей
 //        // Потом достать юзера
 //        ResultSet.TYPE_SCROLL_INSENSITIVE,
-//        // CONCUR_READ_ONLY — режим параллельного доступа: Результирующий ResultSet доступен только для чтения
+//        // CONCUR_READ_ONLY — режим параллельного доступа:
+//        // Результирующий ResultSet доступен только для чтения
 //        ResultSet.CONCUR_READ_ONLY
 //      );
 //
@@ -98,7 +104,9 @@
 //      }
 //
 //    } catch (SQLException throwable) {
-//      throw new ResourceMappingException("Exception while finding user by id.");
+//      throw new ResourceMappingException(
+//        "Exception while finding user by id."
+//      );
 //    }
 //  }
 //
@@ -124,7 +132,8 @@
 //  public Optional<User> findByUsername(String username) {
 //    try {
 //      Connection connection = dataSourceConfig.getConnection();
-//      PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME,
+//      PreparedStatement statement = connection.prepareStatement(
+//        FIND_BY_USERNAME,
 //        ResultSet.TYPE_SCROLL_INSENSITIVE,
 //        ResultSet.CONCUR_READ_ONLY
 //      );
@@ -136,7 +145,9 @@
 //      }
 //
 //    } catch (SQLException throwable) {
-//      throw new ResourceMappingException("Exception while finding user by username.");
+//      throw new ResourceMappingException(
+//        "Exception while finding user by username."
+//      );
 //    }
 //  }
 //
@@ -174,7 +185,10 @@
 //  public void create(User user) {
 //    try {
 //      Connection connection = dataSourceConfig.getConnection();
-//      PreparedStatement statement = connection.prepareStatement(CREATE, PreparedStatement.RETURN_GENERATED_KEYS);
+//      PreparedStatement statement = connection.prepareStatement(
+//        CREATE,
+//        PreparedStatement.RETURN_GENERATED_KEYS
+//      );
 //
 //      statement.setString(1, user.getName());
 //      statement.setString(2, user.getUsername());
@@ -201,20 +215,24 @@
 //  public void insertUserRole(Long userId, Role role) {
 //    try {
 //      Connection connection = dataSourceConfig.getConnection();
-//      PreparedStatement statement = connection.prepareStatement(INSERT_USER_ROLE);
+//      PreparedStatement statement = connection.prepareStatement(
+//        INSERT_USER_ROLE
+//      );
 //
 //      statement.setLong(1, userId);
 //      statement.setString(2, role.name());
 //      statement.executeUpdate();
 //
 //    } catch (SQLException throwable) {
-//      throw new ResourceMappingException("Execution while inserting user role.");
+//      throw new ResourceMappingException(
+//        "Execution while inserting user role."
+//      );
 //    }
 //  }
 //
 //  private final String IS_TASK_OWNER = """
 //        SELECT EXISTS(
-//         	SELECT 1
+//          SELECT 1
 //             FROM users_tasks
 //             WHERE user_id = ?
 //             AND task_id = ?
@@ -225,7 +243,9 @@
 //  public boolean isTaskOwner(Long userId, Long taskId) {
 //    try {
 //      Connection connection = dataSourceConfig.getConnection();
-//      PreparedStatement statement = connection.prepareStatement(IS_TASK_OWNER);
+//      PreparedStatement statement = connection.prepareStatement(
+//        IS_TASK_OWNER
+//      );
 //
 //      statement.setLong(1, userId);
 //      statement.setLong(2, taskId);
@@ -237,7 +257,9 @@
 //      }
 //
 //    } catch (SQLException e) {
-//      throw new ResourceMappingException("Exception while checking if user is task owner.");
+//      throw new ResourceMappingException(
+//        "Exception while checking if user is task owner."
+//      );
 //    }
 //  }
 //

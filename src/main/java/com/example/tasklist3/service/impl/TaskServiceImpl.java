@@ -29,22 +29,23 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @Transactional(readOnly = true)
   @Cacheable(value = "TaskService::getById", key = "#id")
-  public Task getById(Long id) {
+  public Task getById(final Long id) {
     return taskRepository.findById(id)
       .orElseThrow(() -> new ResourceNotFoundException("Task not found."));
   }
 
   @Override
   @Transactional(readOnly = true)
-  // Здесь нет кэширования, т.к. здесь трудно обработать: много когда надо его обновлять
-  public List<Task> getAllByUserId(Long id) {
+  // Здесь нет кэширования, т.к. здесь трудно обработать:
+  //   много когда надо его обновлять
+  public List<Task> getAllByUserId(final Long id) {
     return taskRepository.findAllByUserId(id);
   }
 
   @Override
   @Transactional
   @CachePut(value = "TaskService::getById", key = "#task.id")
-  public Task update(Task task) {
+  public Task update(final Task task) {
     if (task.getStatus() == null) {
       task.setStatus(Status.TODO);
     }
@@ -56,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @Transactional
   @Cacheable(value = "TaskService::getById", key = "#task.id")
-  public Task create(Task task, Long userId) {
+  public Task create(final Task task, final Long userId) {
 //    task.setStatus(Status.TODO);
 //    taskRepository.create(task); // здесь присвоится id
 //    taskRepository.assignToUserById(task.getId(), userId);
@@ -75,14 +76,14 @@ public class TaskServiceImpl implements TaskService {
 //  public void delete(Long id) {
 //    taskRepository.delete(id);
 //  }
-  public void delete(Long id) {
+  public void delete(final Long id) {
     taskRepository.deleteById(id);
   }
 
   @Override
   @Transactional
   @CacheEvict(value = "TaskService::getById", key = "#id")
-  public void uploadImage(Long id, TaskImage image) {
+  public void uploadImage(final Long id, final TaskImage image) {
     Task task = getById(id);
     String fileName = imageService.upload(image);
     task.getImages().add(fileName);

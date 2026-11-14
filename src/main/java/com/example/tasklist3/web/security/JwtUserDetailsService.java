@@ -3,7 +3,7 @@ package com.example.tasklist3.web.security;
 import com.example.tasklist3.domain.user.User;
 import com.example.tasklist3.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NullMarked;
+//import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +18,9 @@ public class JwtUserDetailsService implements UserDetailsService {
     // возвращает спрингового юзера
     @Override
 //    @NullMarked
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(
+      final String username
+    ) throws UsernameNotFoundException {
         User user = userService.getByUsername(username);    // наш юзер в БД
 
         return JwtEntityFactory.create(user); // юзер, понятный для спринга

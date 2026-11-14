@@ -13,8 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
+//import org.springframework.data.redis.cache.RedisCacheManager;
+//import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -32,7 +32,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true) // deprecated
-@RequiredArgsConstructor(onConstructor_ = {@Lazy}) // (onConstructor = @__(@Lazy))
+// (onConstructor = @__(@Lazy))
+@RequiredArgsConstructor(onConstructor_ = {@Lazy})
 public class ApplicationConfig {
 
   //  private final ApplicationContext applicationContext;
@@ -45,19 +46,26 @@ public class ApplicationConfig {
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) /* throws Exception*/ {
+  public AuthenticationManager authenticationManager(
+    final AuthenticationConfiguration configuration
+  ) /* throws Exception*/ {
     return configuration.getAuthenticationManager();
   }
 
 //  @Bean
-//  public MethodSecurityExpressionHandler expressionHandler(ApplicationContext applicationContext) {
-//    DefaultMethodSecurityExpressionHandler expressionHandler = new CustomMethodSecurityExceptionHandler();
+//  public MethodSecurityExpressionHandler expressionHandler(
+//    ApplicationContext applicationContext
+//  ) {
+//    DefaultMethodSecurityExpressionHandler expressionHandler =
+//      new CustomMethodSecurityExceptionHandler();
 //    expressionHandler.setApplicationContext(applicationContext);
 //    return expressionHandler;
 //  }
 
 //  @Bean
-//  public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+//  public RedisCacheManager cacheManager(
+//    RedisConnectionFactory connectionFactory
+//  ) {
 //    return RedisCacheManager.create(connectionFactory);
 //  }
 
@@ -94,12 +102,16 @@ public class ApplicationConfig {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity httpSecurity) /*throws Exception*/ {
+  /*throws Exception*/
+  public SecurityFilterChain filterChain(
+    final HttpSecurity httpSecurity
+  ) {
     httpSecurity
       // .csrf().disable()
       // .cors()
       // .and()
-      // .httpBasic().disable()  /* убрали автоматическую генерацию пароля (показывает в терминале) */
+      /* убрали автоматическую генерацию пароля (показывает в терминале) */
+      // .httpBasic().disable()
       // .sessionManagement()
       // .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       // .and()
@@ -113,7 +125,8 @@ public class ApplicationConfig {
       //     response.getWriter().write("Unauthorized"); // недостаточно прав
       // }))
       // .and()
-      // .authorizeHttpRequests()  // здесь пути, для которых надо проверять авторизацию (токен + права)
+      //  // здесь пути, для которых надо проверять авторизацию (токен + права)
+      // .authorizeHttpRequests()
       // .requestMatchers("/api/v1/auth/**").permitAll()
       // .requestMatchers("/swagger-ui/**").permitAll()
       // .requestMatchers("/v3/api-docs/**").permitAll()
@@ -121,12 +134,22 @@ public class ApplicationConfig {
       // .and()
       // .anonymous().disable()  // для security expressions
 
-      .csrf(AbstractHttpConfigurer::disable)  // .csrf(csrfCustomizer -> csrfCustomizer.disable())
-      .cors(AbstractHttpConfigurer::disable)  // .cors(corsCustomizer -> corsCustomizer.disable())
-      // убрали автоматическую генерацию пароля (показывает пароль в терминале, новый пароль при каждом запуске)
-      .httpBasic(AbstractHttpConfigurer::disable) // .httpBasic(httpBasicCustomizer -> httpBasicCustomizer.disable())
-      // выключает создание сессий, каждый запрос новый, стандарт для RestApi, надо для JWT-авторизации
-      .sessionManagement(sessionManagementCustomizer -> sessionManagementCustomizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      // .csrf(csrfCustomizer -> csrfCustomizer.disable())
+      .csrf(AbstractHttpConfigurer::disable)
+      // .cors(corsCustomizer -> corsCustomizer.disable())
+      .cors(AbstractHttpConfigurer::disable)
+      // убрали автоматическую генерацию пароля
+      // (показывает пароль в терминале, новый пароль при каждом запуске)
+      // .httpBasic(httpBasicCustomizer -> httpBasicCustomizer.disable())
+      .httpBasic(AbstractHttpConfigurer::disable)
+      // выключает создание сессий, каждый запрос новый, стандарт для RestApi,
+      // надо для JWT-авторизации
+      .sessionManagement(
+        sessionManagementCustomizer ->
+          sessionManagementCustomizer.sessionCreationPolicy(
+            SessionCreationPolicy.STATELESS
+          )
+      )
       .exceptionHandling(exceptionHandlingConfigurer ->
         exceptionHandlingConfigurer
           .authenticationEntryPoint((request, response, authException) -> {
@@ -135,20 +158,30 @@ public class ApplicationConfig {
           })
           .accessDeniedHandler(((request, response, accessDeniedException) -> {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.getWriter().write("Unauthorized 403"); // недостаточно прав 403
+            // недостаточно прав 403
+            response.getWriter().write("Unauthorized 403");
           }))
       )
-      .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-        .requestMatchers("/api/v1/auth/**").permitAll() // чтобы смог залогиниться и зарегистрироваться
-        .requestMatchers("/swagger-ui/**").permitAll()
-        .requestMatchers("/v3/api-docs/**").permitAll()
-        .anyRequest().authenticated()
+      .authorizeHttpRequests(
+        authorizationManagerRequestMatcherRegistry ->
+          authorizationManagerRequestMatcherRegistry
+            // чтобы смог залогиниться и зарегистрироваться
+            .requestMatchers("/api/v1/auth/**").permitAll()
+            .requestMatchers("/swagger-ui/**").permitAll()
+            .requestMatchers("/v3/api-docs/**").permitAll()
+            .anyRequest().authenticated()
       )
       // отключено анонимное посещение, надо для Custom Security Expressions
-      .anonymous(AbstractHttpConfigurer::disable) // .anonymous(anonymousConfigurer -> anonymousConfigurer.disable())
-      // кастомный фильтр для проверки JWT-токенов прямо перед стандартной проверкой по логину и паролю
-      // сначала проверит по токену. Если токен в порядке, то пропустит проверку по логину и паролю
-      .addFilterBefore(new JwtTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+      // .anonymous(anonymousConfigurer -> anonymousConfigurer.disable())
+      .anonymous(AbstractHttpConfigurer::disable)
+      // Кастомный фильтр для проверки JWT-токенов
+      // прямо перед стандартной проверкой по логину и паролю
+      // Сначала проверит по токену.
+      // Если токен в порядке, то пропустит проверку по логину и паролю
+      .addFilterBefore(
+        new JwtTokenFilter(tokenProvider),
+        UsernamePasswordAuthenticationFilter.class
+      );
 
     return httpSecurity.build();
   }

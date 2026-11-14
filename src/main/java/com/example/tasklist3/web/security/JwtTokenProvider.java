@@ -6,7 +6,10 @@ import com.example.tasklist3.domain.user.User;
 import com.example.tasklist3.service.UserService;
 import com.example.tasklist3.service.props.JwtProperties;
 import com.example.tasklist3.web.dto.auth.JwtResponse;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -24,32 +27,44 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** <a href="https://medium.com/@frankpythagore/upgrading-your-jwt-implementation-in-java-a-guide-to-the-new-io-jsonwebtoken-api-ab30234d5979">...</a> */
+// https://medium.com/@frankpythagore/upgrading-your-jwt-implementation-in-java
+// -a-guide-to-the-new-io-jsonwebtoken-api-ab30234d5979
 
 // TODO check newer code works
-// https://github.com/SpringBootCourses/tasklist/blob/main/src/main/java/com/example/tasklist/web/security/JwtTokenProvider.java
+// https://github.com/SpringBootCourses/tasklist/blob/main/src/main/java/com
+//   /example/tasklist/web/security/JwtTokenProvider.java
 
 @Service
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    private final JwtProperties jwtProperties;  // хранит данные из application.yaml
+    // хранит данные из application.yaml
+    private final JwtProperties jwtProperties;
 
     private final UserDetailsService userDetailsService;
     private final UserService userService;
     // private Key key;
     private SecretKey key;
 
-    @PostConstruct  // вызывается после конструктора - к этому моменту три поля (userDetailsService + userService + Key) уже заавтовайрены, @Autowired происходит в конструкторе
+    // вызывается после конструктора - к этому моменту три поля
+    // (userDetailsService + userService + Key) уже заавтовайрены,
+    // @Autowired происходит в конструкторе
+    @PostConstruct
     public void init() {
          this.key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes());
 
-        //from articles: https://medium.com/@frankpythagore/upgrading-your-jwt-implementation-in-java-a-guide-to-the-new-io-jsonwebtoken-api-ab30234d5979
-//         this.key = new SecretKeySpec(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
-        // или
-        // getSignInKey()-method:
-        //   byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        //   return Keys.hmacShaKeyFor(keyBytes);
+// from articles:
+// https://medium.com/@frankpythagore/upgrading-your-jwt-implementation-in-java
+// -a-guide-to-the-new-io-jsonwebtoken-api-ab30234d5979
+
+// this.key = new SecretKeySpec(jwtProperties.getSecret()
+//  .getBytes(StandardCharsets.UTF_8),
+//  SignatureAlgorithm.HS256.getJcaName()
+// );
+// или
+// getSignInKey()-method:
+//   byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+//   return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String createAccessToken(
@@ -65,7 +80,8 @@ public class JwtTokenProvider {
                 .build();
 
 //        Date now = new Date();
-//        Date validity = new Date(now.getTime() + jwtProperties.getAccess()); // когда токен умрёт
+            // когда токен умрёт
+//        Date validity = new Date(now.getTime() + jwtProperties.getAccess());
         Instant validity = Instant.now()
                 .plus(jwtProperties.getAccess(), ChronoUnit.HOURS);
 
@@ -81,7 +97,8 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .claims(claims)
 //                .issuedAt(now)  // new Date(System.currentTimeMillis())
-//                .expiration(validity)   // new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10) // 10 hours
+                  // new Date(System.currentTimeMillis()+1000*60*60*10)//10hour
+//                .expiration(validity)
                  .expiration(Date.from(validity))
                 .signWith(key)  // getSignInKey(), Jwts.SIG.HS256
                 .compact();
@@ -119,8 +136,12 @@ public class JwtTokenProvider {
 //                .compact();
         return Jwts.builder()
                 .claims(claims)
-//                .issuedAt(now)  // new Date(System.currentTimeMillis())
-//                .expiration(validity)   // new Date(System.currentTimeMillis() + 1000* 60 * 60 *10) // 10 hours
+
+                  // new Date(System.currentTimeMillis())
+//                .issuedAt(now)
+
+                  // new Date(System.currentTimeMillis()+1000*60*60*10)//10hour
+//                .expiration(validity)
                  .expiration(Date.from(validity))
                 .signWith(key)  // getSignInKey(), Jwts.SIG.HS256
                 .compact();
@@ -139,8 +160,12 @@ public class JwtTokenProvider {
         User user = userService.getById(userId);
         jwtResponse.setId(userId);
         jwtResponse.setUsername(user.getUsername());
-        jwtResponse.setAccessToken(createAccessToken(userId, user.getUsername(), user.getRoles()));
-        jwtResponse.setRefreshToken(createRefreshToken(userId, user.getUsername()));
+        jwtResponse.setAccessToken(
+          createAccessToken(userId, user.getUsername(), user.getRoles())
+        );
+        jwtResponse.setRefreshToken(
+          createRefreshToken(userId, user.getUsername())
+        );
 
         return jwtResponse;
     }
@@ -207,7 +232,8 @@ public class JwtTokenProvider {
             final String token
     ) {
         String username = getUsername(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userDetailsService
+          .loadUserByUsername(username);
 
         return new UsernamePasswordAuthenticationToken(
                 userDetails,

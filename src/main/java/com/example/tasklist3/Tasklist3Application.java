@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableCaching
 public class Tasklist3Application {
-	static void main(String[] args) {
-		SpringApplication.run(Tasklist3Application.class, args);
-	}
+  static void main(final String[] args) {
+    SpringApplication.run(Tasklist3Application.class, args);
+  }
 }

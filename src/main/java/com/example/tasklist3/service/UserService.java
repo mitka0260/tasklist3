@@ -3,7 +3,8 @@ package com.example.tasklist3.service;
 import com.example.tasklist3.domain.user.User;
 
 public interface UserService {
-  User getById(Long id); // здесь нет Optional, т.к возвращает либо объект, либо исключение
+  // Здесь нет Optional, т.к. возвращает либо объект, либо исключение
+  User getById(Long id);
 
   User getByUsername(String username);
 

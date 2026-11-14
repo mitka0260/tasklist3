@@ -4,7 +4,7 @@ import com.example.tasklist3.domain.task.Task;
 import com.example.tasklist3.web.dto.task.TaskDto;
 import org.mapstruct.Mapper;
 
-import java.util.List;
+// import java.util.List;
 
 @Mapper(componentModel = "spring")
 //@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
