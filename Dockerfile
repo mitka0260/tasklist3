@@ -5,6 +5,7 @@
 FROM maven:3.9.16-sapmachine-27 AS build
 WORKDIR /
 COPY /src /src
+COPY checkstyle-suppressions.xml /
 COPY pom.xml /
 RUN mvn -f /pom.xml clean package
 
